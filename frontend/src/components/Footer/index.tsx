@@ -6,9 +6,6 @@ import * as S from './styles';
 
 const Footer: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>({} as HTMLDivElement);
-  // const classroomButtonRef = useRef<HTMLButtonElement>({} as HTMLButtonElement);
-  // const friendsButtonRef = useRef<HTMLButtonElement>({} as HTMLButtonElement);
-  // const settingsButtonRef = useRef<HTMLButtonElement>({} as HTMLButtonElement);
 
   const addActiveClass = (selectedButton: HTMLButtonElement) => {
     const buttonsRefGroup = containerRef.current;
