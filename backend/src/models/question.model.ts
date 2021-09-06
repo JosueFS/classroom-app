@@ -1,5 +1,16 @@
 import { Schema, model, models } from 'mongoose';
 
+export type QuestionType = {
+  question: string;
+  answers: {
+    a: string | number;
+    b: string | number;
+    c: string | number;
+    d: string | number;
+  };
+  correct_answer: string | number;
+};
+
 const questionSchema = new Schema({
   question: { type: 'string', required: true },
   answers: {
@@ -11,6 +22,6 @@ const questionSchema = new Schema({
   correct_answer: { type: 'string', required: true },
 });
 
-const Question = models.question || model('question', questionSchema);
+const Question = model<QuestionType>('question', questionSchema);
 
 export default Question;
