@@ -21,8 +21,6 @@ const Route: React.FC<IRouteProps> = ({
     authState: { name },
   } = useAuth();
 
-  console.log(useAuth());
-
   return (
     <ReactDomRoute
       {...rest}

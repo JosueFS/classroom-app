@@ -18,24 +18,20 @@ export const AuthProvider: React.FC = ({ children }) => {
   const [data, setData] = useState<AuthState>(() => {
     const token = localStorage.getItem('@JG_Classroom:token');
     const name = localStorage.getItem('@JG_Classroom:name');
-    console.log(uuid());
+
     if (token && name) {
       return { token, name };
     }
     return {} as AuthState;
   });
 
-  const signIn = useCallback(
-    async (name: string) => {
-      localStorage.setItem('@JG_Classroom:token', uuid());
-      localStorage.setItem('@JG_Classroom:name', name);
+  const signIn = useCallback(async (name: string) => {
+    const token = uuid();
+    localStorage.setItem('@JG_Classroom:token', token);
+    localStorage.setItem('@JG_Classroom:name', name);
 
-      console.log(data);
-
-      setData({ token: '', name });
-    },
-    [data],
-  );
+    setData({ token, name });
+  }, []);
 
   const signOut = useCallback(() => {
     localStorage.removeItem('@JG_Classroom:token');
