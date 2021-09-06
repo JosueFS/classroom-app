@@ -1,9 +1,31 @@
 import React from 'react';
+import { FaUserGraduate } from 'react-icons/fa';
 
-// import { Container } from './styles';
+import * as S from './styles';
+import logoJG from '../../assets/logo.jpeg';
+import Input from '../../components/Input';
 
 const SignIn: React.FC = () => {
-  return <h1>SignIn</h1>;
+  return (
+    <S.Container>
+      <S.LogoContainer>
+        <img src={logoJG} alt="logo-jovens-genios" />
+        <h2>Sala dos Gênios</h2>
+      </S.LogoContainer>
+
+      <S.Form>
+        <h4>Acessar sala de aula</h4>
+        <Input
+          name="student-name"
+          type="text"
+          placeholder="Digite seu nome"
+          icon={FaUserGraduate}
+        />
+
+        <button type="submit">Entrar</button>
+      </S.Form>
+    </S.Container>
+  );
 };
 
 export default SignIn;
