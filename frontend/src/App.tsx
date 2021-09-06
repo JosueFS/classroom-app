@@ -1,9 +1,17 @@
 import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
+
+import AppProvider from './hooks';
+import Routes from './routes';
 
 const App: React.FC = () => {
   return (
     <>
-      <h1>Hello World!</h1>
+      <BrowserRouter>
+        <AppProvider>
+          <Routes />
+        </AppProvider>
+      </BrowserRouter>
     </>
   );
 };
