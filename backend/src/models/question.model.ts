@@ -1,6 +1,6 @@
-import { Schema, model, models } from 'mongoose';
+import { Schema, model, Document, models, Model } from 'mongoose';
 
-export type QuestionType = {
+export interface IQuestionType extends Document {
   question: string;
   answers: {
     a: string | number;
@@ -9,7 +9,7 @@ export type QuestionType = {
     d: string | number;
   };
   correct_answer: string | number;
-};
+}
 
 const questionSchema = new Schema({
   question: { type: 'string', required: true },
@@ -22,6 +22,7 @@ const questionSchema = new Schema({
   correct_answer: { type: 'string', required: true },
 });
 
-const Question = model<QuestionType>('question', questionSchema);
+const Question =
+  models.question || model<IQuestionType>('question', questionSchema);
 
 export default Question;

@@ -2,21 +2,41 @@ import { Request, Response } from 'express';
 
 import connect from '../services/mongodb';
 
-import Quiz, { QuizType } from '../models/quiz.model';
-import Question, { QuestionType } from '../models/question.model';
+import Quiz, { IQuizType } from '../models/quiz.model';
+import Question, { IQuestionType } from '../models/question.model';
 
-interface IRequestQuestionType extends QuestionType {
+interface IRequestQuestionType extends IQuestionType {
   subject: string;
 }
 
 const QuestionsController = {
   index: async (request: Request, response: Response) => {
     console.log('Acessando endpoint de questões');
+    const { subject } = request.params;
+
     await connect();
 
-    const questionsList = await Question.find();
+    const [quizList]: IQuizType[] = await Quiz.find({
+      subject,
+    });
 
-    return response.status(200).json(questionsList);
+    if (!quizList) {
+      return response.status(406).json(`No ${subject} Quiz was found`);
+    }
+
+    const questions: IQuestionType[] = await Question.find(
+      {
+        _id: { $in: quizList.questions },
+      },
+      {
+        correct_answer: false,
+      },
+    );
+
+    return response.status(200).json({
+      subject,
+      questions,
+    });
   },
   checkAnswer: async (request: Request, response: Response) => {
     console.log('Verificando a resposta correta');
@@ -24,7 +44,7 @@ const QuestionsController = {
     const { answer } = request.body;
     await connect();
 
-    const [question]: QuestionType[] = await Question.find(
+    const [question]: IQuestionType[] = await Question.find(
       {
         _id: id,
       },

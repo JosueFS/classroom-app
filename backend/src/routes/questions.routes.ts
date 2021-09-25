@@ -4,7 +4,7 @@ import QuestionsController from '../controllers/questions.controller';
 
 const questionsRouter = Router();
 
-questionsRouter.get('/', QuestionsController.index);
+questionsRouter.get('/:subject', QuestionsController.index);
 
 questionsRouter.post('/:id', QuestionsController.checkAnswer);
 
