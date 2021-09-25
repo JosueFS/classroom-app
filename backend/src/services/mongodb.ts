@@ -9,6 +9,7 @@ async function connect() {
       bufferCommands: false,
       dbName: dbName,
       maxPoolSize: 10,
+      ignoreUndefined: true,
     });
   } catch (error) {
     console.log(`An unknown error occured: \n${error}`);
