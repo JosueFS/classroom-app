@@ -1,13 +1,14 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import React from 'react';
 import {
   Redirect,
-  Route as ReactDomRoute,
-  RouteProps as ReactDomRouteProps,
+  Route as ReactDOMRoute,
+  RouteProps as ReactDOMRouteProps,
 } from 'react-router-dom';
 
 import { useAuth } from '../hooks/auth';
 
-interface IRouteProps extends ReactDomRouteProps {
+interface IRouteProps extends ReactDOMRouteProps {
   isPrivate?: boolean;
   component: React.ComponentType;
 }
@@ -17,20 +18,36 @@ const Route: React.FC<IRouteProps> = ({
   component: Component,
   ...rest
 }) => {
-  const {
-    authState: { name },
-  } = useAuth();
+  const { authState } = useAuth();
 
   return (
-    <ReactDomRoute
+    <ReactDOMRoute
       {...rest}
       render={() => {
-        return isPrivate === !!name ? (
+        if (authState.type === 'teacher') {
+          return isPrivate === !!authState.name ? (
+            <>
+              <Component {...rest} />
+            </>
+          ) : (
+            <Redirect
+              to={{
+                pathname: isPrivate ? '/' : `/teacher`,
+              }}
+            />
+          );
+        }
+
+        return isPrivate === !!authState.name ? (
           <>
             <Component {...rest} />
           </>
         ) : (
-          <Redirect to={{ pathname: isPrivate ? '/login' : '/' }} />
+          <Redirect
+            to={{
+              pathname: isPrivate ? '/' : `/home`,
+            }}
+          />
         );
       }}
     />
