@@ -2,13 +2,14 @@ import React, { createContext, useCallback, useState, useContext } from 'react';
 import { v4 as uuid } from 'uuid';
 
 interface AuthState {
-  token: string;
+  token?: string;
   name: string;
+  type: 'student' | 'teacher';
 }
 
 export interface AuthContextData {
   authState: AuthState;
-  signIn(name: string): Promise<void>;
+  signIn(credentials: AuthState): Promise<void>;
   signOut(): void;
 }
 
@@ -18,20 +19,25 @@ export const AuthProvider: React.FC = ({ children }) => {
   const [data, setData] = useState<AuthState>(() => {
     const token = localStorage.getItem('@JG_Classroom:token');
     const name = localStorage.getItem('@JG_Classroom:name');
+    const type = localStorage.getItem('@JG_Classroom:type');
 
-    if (token && name) {
-      return { token, name };
+    if (token && name && (type === 'student' || type === 'teacher')) {
+      return { token, name, type };
     }
+
     return {} as AuthState;
   });
 
-  const signIn = useCallback(async (name: string) => {
-    const token = uuid();
-    localStorage.setItem('@JG_Classroom:token', token);
-    localStorage.setItem('@JG_Classroom:name', name);
+  const signIn = useCallback(
+    async ({ token = uuid(), name, type }: AuthState) => {
+      localStorage.setItem('@JG_Classroom:token', token);
+      localStorage.setItem('@JG_Classroom:name', name);
+      localStorage.setItem('@JG_Classroom:type', type);
 
-    setData({ token, name });
-  }, []);
+      setData({ token, name, type });
+    },
+    [],
+  );
 
   const signOut = useCallback(() => {
     localStorage.removeItem('@JG_Classroom:token');
