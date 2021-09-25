@@ -6,7 +6,7 @@ const quizRouter = Router();
 
 quizRouter.get('/', QuizController.index);
 
-quizRouter.get('/:subject', QuizController.show);
+quizRouter.get('/:id', QuizController.show);
 
 quizRouter.post('/', QuizController.create);
 
