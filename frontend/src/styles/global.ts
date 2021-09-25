@@ -13,18 +13,16 @@ export default createGlobalStyle`
   html {
     font-size: 62.5%;
     scroll-behavior: smooth;
-    max-width: 768px;
     margin: 0 auto;
-    background-color: ${props => props.theme.colors.lightGreen}
+    
   }
 
   #root {
     width: 100%;
-    height: 100%;
+    height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 16px;
   }
 
   body,

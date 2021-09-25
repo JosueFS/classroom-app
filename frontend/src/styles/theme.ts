@@ -1,12 +1,28 @@
-const theme = {
+const defaultColors = {
+  black: '#000000',
+  white: '#ffffff',
+  gray: '#555555',
+  alternative: '#2DD5C4',
+  selectedAnswer: '#27D58C',
+  wrongAnswer: '#C00',
+};
+
+const student = {
   colors: {
-    black: '#000',
-    white: '#fff',
-    darkGreen: '#062423',
-    mediumGreen: '#0e5958',
-    lightGreen: '#e6ffed',
-    alternativeGreen: '#2DD5C4',
+    dark: '#062423',
+    medium: '#0e5958',
+    light: '#e6ffed',
+    defaultColors,
   },
 };
 
-export default theme;
+const teacher = {
+  colors: {
+    dark: '#2c234c',
+    medium: '#7159c1',
+    light: '#c3b2ff',
+    defaultColors,
+  },
+};
+
+export { student, teacher };

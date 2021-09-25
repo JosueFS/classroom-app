@@ -2,10 +2,20 @@
 
 import 'styled-components';
 
-import theme from './theme';
-
-export type Theme = typeof theme;
-
 declare module 'styled-components' {
-  export interface DefaultTheme extends Theme {}
+  export interface DefaultTheme {
+    colors: {
+      dark: string;
+      medium: string;
+      light: string;
+      defaultColors: {
+        black: string;
+        white: string;
+        gray: string;
+        alternative: string;
+        selectedAnswer: string;
+        wrongAnswer: string;
+      };
+    };
+  }
 }
