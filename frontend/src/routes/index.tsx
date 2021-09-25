@@ -1,16 +1,21 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Switch } from 'react-router-dom';
 
 import Route from './Route';
 
-import Home from '../pages/Home';
+import TeacherHome from '../pages/Teacher/Home';
+
 import SignIn from '../pages/SignIn';
+
+import StudentHome from '../pages/Student/Home';
 
 const Routes: React.FC = () => {
   return (
     <Switch>
-      <Route path="/" exact component={Home} isPrivate />
-      <Route path="/login" exact component={SignIn} />
+      <Route path="/" exact component={SignIn} />
+      <Route path="/home" component={StudentHome} isPrivate />
+
+      <Route path="/teacher" component={TeacherHome} isPrivate />
     </Switch>
   );
 };
