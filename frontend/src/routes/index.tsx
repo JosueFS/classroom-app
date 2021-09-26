@@ -10,6 +10,7 @@ import StudentClassroom from '../pages/Student/Classroom';
 
 import TeacherHome from '../pages/Teacher/Home';
 import TeacherClassroom from '../pages/Teacher/Classroom';
+import TeacherRoom from '../pages/Teacher/Room';
 
 const Routes: React.FC = () => {
   return (
@@ -27,7 +28,15 @@ const Routes: React.FC = () => {
       />
       <Route
         path="/teacher/classroom"
+        exact
         component={TeacherClassroom}
+        isPrivate
+        onlyTeacher
+      />
+      <Route
+        exact
+        path="/teacher/classroom/matematica"
+        component={TeacherRoom}
         isPrivate
         onlyTeacher
       />
