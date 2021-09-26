@@ -4,21 +4,29 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 32px;
+  width: 100%;
+  height: 100vh;
+  padding-top: 16px;
+  gap: 24px;
+
+  background-color: ${props => props.theme.colors.defaultColors.gray}22;
 `;
 
 export const LogoContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
   gap: 16px;
-  padding: 16px;
 
   img {
-    width: 100%;
+    height: 30vh;
+    max-height: 400px;
+    border-radius: 50%;
   }
 
   h2 {
+    text-align: center;
     text-transform: uppercase;
   }
 `;
@@ -27,31 +35,13 @@ export const Form = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 32px;
-  padding: 32px 24px;
+  width: 100%;
+  min-width: 300px;
+  gap: 16px;
+  padding: 8px;
   border-radius: 10px;
-  background-color: ${props => props.theme.colors.darkGreen};
 
   h4 {
-    color: #fff;
-  }
-
-  input,
-  button {
-    width: 100%;
-    padding: 16px;
-    border: none;
-    border-radius: 10px;
-  }
-
-  button {
-    font-weight: bold;
-    color: ${props => props.theme.colors.white};
-    background: ${props => props.theme.colors.mediumGreen};
-    cursor: pointer;
-
-    &:hover {
-      background: ${props => props.theme.colors.mediumGreen}dd;
-    }
+    color: ${props => props.theme.colors.dark};
   }
 `;
