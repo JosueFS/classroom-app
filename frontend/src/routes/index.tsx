@@ -9,6 +9,7 @@ import StudentHome from '../pages/Student/Home';
 import StudentClassroom from '../pages/Student/Classroom';
 
 import TeacherHome from '../pages/Teacher/Home';
+import TeacherClassroom from '../pages/Teacher/Classroom';
 
 const Routes: React.FC = () => {
   return (
@@ -17,8 +18,19 @@ const Routes: React.FC = () => {
       <Route path="/home" component={StudentHome} isPrivate />
       <Route path="/classroom" component={StudentClassroom} isPrivate />
 
-      <Route path="/teacher" component={TeacherHome} isPrivate />
-      <Route path="/teacher/classroom" component={TeacherHome} isPrivate />
+      <Route
+        path="/teacher"
+        exact
+        component={TeacherHome}
+        isPrivate
+        onlyTeacher
+      />
+      <Route
+        path="/teacher/classroom"
+        component={TeacherClassroom}
+        isPrivate
+        onlyTeacher
+      />
     </Switch>
   );
 };

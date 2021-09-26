@@ -10,11 +10,13 @@ import { useAuth } from '../hooks/auth';
 
 interface IRouteProps extends ReactDOMRouteProps {
   isPrivate?: boolean;
+  onlyTeacher?: boolean;
   component: React.ComponentType;
 }
 
 const Route: React.FC<IRouteProps> = ({
   isPrivate = false,
+  onlyTeacher = false,
   component: Component,
   ...rest
 }) => {
@@ -38,7 +40,7 @@ const Route: React.FC<IRouteProps> = ({
           );
         }
 
-        return isPrivate === !!authState.name ? (
+        return isPrivate === !!authState.name && onlyTeacher === false ? (
           <>
             <Component {...rest} />
           </>
