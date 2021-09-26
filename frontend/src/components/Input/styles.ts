@@ -9,42 +9,58 @@ interface ContainerProps {
 }
 
 export const Container = styled.div<ContainerProps>`
-  background: ${props => props.theme.colors.white};
-  border-radius: 10px;
-  border: 2px solid ${props => props.theme.colors.white};
-  /* padding: 16px; */
   width: 100%;
-  color: ${props => props.theme.colors.darkGreen};
+  max-width: 320px;
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+  padding: 16px;
+  border-radius: 10px;
+
+  background: ${props => props.theme.colors.defaultColors.white};
+  border: 2px solid ${props => props.theme.colors.defaultColors.gray};
+  color: ${props => props.theme.colors.defaultColors.gray};
+
+  & + div {
+    margin-top: 8px;
+  }
+
+  input {
+    background: transparent;
+    color: ${props => props.theme.colors.medium};
+    flex: 1;
+    border: 0;
+    &::placeholder {
+      color: ${props => props.theme.colors.defaultColors.gray};
+    }
+  }
+
   ${props =>
     props.hasError &&
     css`
       border-color: #c53030;
     `}
-  ${componentProps =>
-    componentProps.isFocused &&
-    css`
-      color: ${props => props.theme.colors.darkGreen};
-      border-color: #ff9011;
-    `}
+
   ${componentProps =>
     componentProps.isFilled &&
     css`
-      color: ${props => props.theme.colors.darkGreen};
+      color: ${props => props.theme.colors.medium};
+      border-color: ${props => props.theme.colors.medium};
     `}
-  display: flex;
-  align-items: center;
-  & + div {
-    margin-top: 8px;
-  }
-  input {
-    background: transparent;
-    color: ${props => props.theme.colors.darkGreen};
-    flex: 1;
-    border: 0;
-    &::placeholder {
-      color: ${props => props.theme.colors.mediumGreen};
-    }
-  }
+
+  ${componentProps =>
+    componentProps.isFocused &&
+    css`
+      color: ${props => props.theme.colors.medium};
+      border-color: ${props => props.theme.colors.medium};
+
+      input::placeholder {
+        color: ${props => props.theme.colors.medium};
+      }
+    `}
+
+    
+
   svg {
     margin: 0 8px;
   }

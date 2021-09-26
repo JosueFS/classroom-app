@@ -30,7 +30,7 @@ const Footer: React.FC = () => {
     <S.Container ref={containerRef}>
       <button type="button" className="active" onClick={handleSelectedMenu}>
         <FaBook size={24} />
-        <span>Aula</span>
+        <span>Aulas</span>
       </button>
 
       <button type="button" onClick={handleSelectedMenu}>

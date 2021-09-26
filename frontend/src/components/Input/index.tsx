@@ -5,6 +5,7 @@ import React, {
   useRef,
   useCallback,
   forwardRef,
+  useImperativeHandle,
 } from 'react';
 import { IconBaseProps } from 'react-icons';
 import { FiAlertCircle } from 'react-icons/fi';
@@ -21,10 +22,12 @@ const Input: React.ForwardRefRenderFunction<HTMLInputElement, InputProps> = (
   { name, containerStyle, icon: Icon, ...rest },
   ref,
 ) => {
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLInputElement>({} as HTMLInputElement);
   const [isFocused, setIsFocused] = useState(false);
   const [isFilled, setIsFilled] = useState(false);
   const [error] = useState('');
+
+  useImperativeHandle(ref, () => inputRef.current, [inputRef]);
 
   const handleInputFocus = useCallback(() => {
     setIsFocused(true);
@@ -49,7 +52,7 @@ const Input: React.ForwardRefRenderFunction<HTMLInputElement, InputProps> = (
         name={name}
         onFocus={handleInputFocus}
         onBlur={handleInputBlur}
-        ref={ref}
+        ref={inputRef}
         {...rest}
       />
       {error && (
