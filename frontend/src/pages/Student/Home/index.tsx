@@ -1,14 +1,20 @@
 import React, { useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { FaPowerOff } from 'react-icons/fa';
+import { FaBook, FaPowerOff, FaUserFriends } from 'react-icons/fa';
+import { MdSettings } from 'react-icons/md';
+import { IconBaseProps } from 'react-icons';
 
+import { useAuth } from '../../../hooks/auth';
 import Footer from '../../../components/Footer';
+
+import userAvatar from '../../../assets/avatar.png';
 
 import * as S from './styles';
 
-import userAvatar from '../../../assets/avatar.png';
-import teacherAvatar from '../../../assets/logo-teacher.png';
-import { useAuth } from '../../../hooks/auth';
+type MenuButton = {
+  labelText: string;
+  Icon?: React.ComponentType<IconBaseProps>;
+};
 
 const Home: React.FC = () => {
   const { authState, signOut } = useAuth();
@@ -17,6 +23,21 @@ const Home: React.FC = () => {
   const handleJoinClassroom = useCallback(() => {
     return '/classroom';
   }, []);
+
+  const buttonList: MenuButton[] = [
+    {
+      labelText: 'Aulas',
+      Icon: FaBook,
+    },
+    {
+      labelText: 'Amigos',
+      Icon: FaUserFriends,
+    },
+    {
+      labelText: 'Configurações',
+      Icon: MdSettings,
+    },
+  ];
 
   return (
     <S.Container>
@@ -40,7 +61,7 @@ const Home: React.FC = () => {
             <span>08:00 - 09:20</span>
             <img
               className="avatar"
-              src={teacherAvatar}
+              src="https://avatars.dicebear.com/api/personas/2b1dfefc-8172-4c22-bb71-6f032fc0d3e9.svg"
               alt="avatar do professor"
             />
           </Link>
@@ -50,7 +71,7 @@ const Home: React.FC = () => {
             <span>09:20 - 10:40</span>
             <img
               className="avatar"
-              src={teacherAvatar}
+              src="https://avatars.dicebear.com/api/personas/ef975797-5cde-4204-981d-f839a3e582b4.svg"
               alt="avatar do professor"
             />
           </Link>
@@ -60,27 +81,14 @@ const Home: React.FC = () => {
             <span>11:20 - 12:00</span>
             <img
               className="avatar"
-              src={teacherAvatar}
+              src="https://avatars.dicebear.com/api/personas/c4d8e388-e0d7-41fb-9d95-c32b5d313503.svg"
               alt="avatar do professor"
             />
           </Link>
         </div>
       </main>
-      {/* 
-      <div className="video-container">
-        <img
-          src="https://media.istockphoto.com/videos/smiling-indian-woman-vlogger-speaking-looking-at-camera-at-home-video-id1180677533?s=640x640"
-          alt="teacher"
-          className="teacher-webcam"
-        />
-        <img
-          src="https://media.istockphoto.com/videos/an-elementary-school-student-working-at-home-video-id1262546383?s=640x640"
-          alt="student"
-          className="student-webcam"
-        />
-      </div> */}
 
-      <Footer />
+      <Footer buttonList={buttonList} />
     </S.Container>
   );
 };
