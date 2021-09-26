@@ -1,10 +1,18 @@
-import React, { useRef, useCallback } from 'react';
-import { FaBook, FaUserFriends } from 'react-icons/fa';
-import { MdSettings } from 'react-icons/md';
+import React, { useRef, useCallback, ButtonHTMLAttributes } from 'react';
+import { IconBaseProps } from 'react-icons';
 
 import * as S from './styles';
 
-const Footer: React.FC = () => {
+interface IButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  buttonList: MenuButton[];
+}
+
+type MenuButton = {
+  labelText: string;
+  Icon?: React.ComponentType<IconBaseProps>;
+};
+
+const Footer: React.FC<IButtonProps> = ({ buttonList }) => {
   const containerRef = useRef<HTMLDivElement>({} as HTMLDivElement);
 
   const addActiveClass = (selectedButton: HTMLButtonElement) => {
@@ -28,20 +36,16 @@ const Footer: React.FC = () => {
 
   return (
     <S.Container ref={containerRef}>
-      <button type="button" className="active" onClick={handleSelectedMenu}>
-        <FaBook size={24} />
-        <span>Aulas</span>
-      </button>
-
-      <button type="button" onClick={handleSelectedMenu}>
-        <FaUserFriends size={24} />
-        <span>Amigos</span>
-      </button>
-
-      <button type="button" onClick={handleSelectedMenu}>
-        <MdSettings size={24} />
-        <span>Configurações</span>
-      </button>
+      {buttonList.map((btn, index) => (
+        <button
+          type="button"
+          onClick={handleSelectedMenu}
+          className={index === 0 ? 'active' : ''}
+        >
+          {btn.Icon && <btn.Icon size={24} />}
+          <span>{btn.labelText}</span>
+        </button>
+      ))}
     </S.Container>
   );
 };
