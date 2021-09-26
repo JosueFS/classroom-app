@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef } from 'react';
-import { v4 as uuid } from 'uuid';
+
 import { Tab, TabList, TabPanel, Tabs } from 'react-tabs';
 import { useHistory } from 'react-router-dom';
 import {
@@ -14,19 +14,18 @@ import {
 import { SiGoogleclassroom } from 'react-icons/si';
 import { GiRank1, GiRank2, GiRank3 } from 'react-icons/gi';
 
-import * as S from './styles';
+import { generateRandomAvatar } from '../../../utils/generateRandomAvatar';
+
 import ProgressBar from '../../../components/ProgressBar';
 import Button from '../../../components/Button';
+
+import * as S from './styles';
 
 const Classroom: React.FC = () => {
   const history = useHistory();
 
   const tabsRef = useRef<HTMLElement>({} as HTMLElement);
   const tabMarkerRef = useRef<HTMLDivElement>({} as HTMLDivElement);
-
-  const generateRandomAvatar = useCallback(() => {
-    return `https://avatars.dicebear.com/api/personas/${uuid()}.svg`;
-  }, []);
 
   const handleSelectTab = useCallback(selectedTab => {
     if (
@@ -40,7 +39,7 @@ const Classroom: React.FC = () => {
   }, []);
 
   const handleNavigateToBack = useCallback(() => {
-    history.push('/home');
+    history.goBack();
   }, [history]);
 
   useEffect(() => {
