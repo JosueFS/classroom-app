@@ -162,7 +162,7 @@ const Classroom: React.FC = () => {
               <div className="progress__item-text">
                 <strong>Conjuntos Numéricos</strong>
                 <span>Concluído</span>
-                <span>Prazo máximo: 27/09/2021</span>
+                <span>Prazo máximo: 25/09/2021</span>
               </div>
             </div>
 
@@ -171,15 +171,6 @@ const Classroom: React.FC = () => {
               <div className="progress__item-text">
                 <strong>Operações Matemáticas</strong>
                 <span>III - Multiplicação</span>
-                <span>Prazo máximo: 27/09/2021</span>
-              </div>
-            </div>
-
-            <div className="progress__item">
-              <FaRegSquare size={40} color="#555" />
-              <div className="progress__item-text">
-                <strong>Geometria</strong>
-                <span>Não iniciado</span>
                 <span>Prazo máximo: 27/09/2021</span>
               </div>
             </div>
@@ -193,7 +184,7 @@ const Classroom: React.FC = () => {
               <div className="progress__item-text">
                 <strong>Conjuntos Numéricos</strong>
                 <span>Concluído</span>
-                <span>Prazo máximo: 27/09/2021</span>
+                <span>Pontuação: 10/10</span>
               </div>
             </div>
 
@@ -202,7 +193,7 @@ const Classroom: React.FC = () => {
               <div className="progress__item-text">
                 <strong>Operações Matemáticas</strong>
                 <span>III - Multiplicação</span>
-                <span>Prazo máximo: 27/09/2021</span>
+                <span>Data da aula: 27/09/2021</span>
               </div>
             </div>
           </section>

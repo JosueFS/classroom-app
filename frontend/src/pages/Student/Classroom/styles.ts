@@ -73,7 +73,7 @@ export const Container = styled.div`
     height: 100%;
     color: ${props => props.theme.colors.dark};
     background-color: ${props => props.theme.colors.medium}22;
-    padding: 16px 8px;
+    padding: 8px;
 
     section {
       padding: 8px 0;

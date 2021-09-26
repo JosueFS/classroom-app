@@ -24,7 +24,7 @@ const Home: React.FC = () => {
     return `${url}/classroom`;
   }, [url]);
 
-  const handleCreateClassroom = useCallback(() => {
+  const handleNotImplementedYet = useCallback(() => {
     return `${url}`;
   }, [url]);
 
@@ -73,7 +73,7 @@ const Home: React.FC = () => {
 
         <h3>Planejar</h3>
         <div className="container">
-          <Link to={handleCreateClassroom}>
+          <Link to={handleNotImplementedYet}>
             <h5>Planejar Aula</h5>
             <p>
               Preencha as informações da aula que serão visualizadas no lobby da
@@ -83,7 +83,7 @@ const Home: React.FC = () => {
         </div>
 
         <div className="container">
-          <Link to={handleJoinClassroom}>
+          <Link to={handleNotImplementedYet}>
             <h5>Criar Quiz</h5>
             <p>
               Crie quizzes interativos relacionadas a essa matéria para serem
