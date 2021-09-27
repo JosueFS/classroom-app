@@ -1,17 +1,22 @@
 import express, { Request, Response, NextFunction as Next } from 'express';
+import http from 'http';
+import socketio from 'socket.io';
 import cors from 'cors';
 
 import 'dotenv/config';
 
 import routes from './routes';
+import * as UsersController from './controllers/users.controller';
+import { removeUser } from './controllers/users.controller';
 
 const PORT = process.env.PORT || 3333;
 
 const app = express();
+const httpServer = http.createServer(app);
+const io = new socketio.Server(httpServer);
 
 app.use(express.json());
-// app.use(cors);
-
+app.use(cors());
 app.use(routes);
 
 app.use((error: Error, request: Request, response: Response, next: Next) => {
@@ -20,4 +25,71 @@ app.use((error: Error, request: Request, response: Response, next: Next) => {
   response.json({ message: error.message || 'An unknown error occured.' });
 });
 
-app.listen(PORT, () => console.log(`\nServidor online na porta: ${PORT}!`));
+io.on('connection', socket => {
+  socket.on('join', ({ id, token, name, type, room }) => {
+    const { error, user } = UsersController.addUser({
+      id: socket.id,
+      token,
+      name,
+      type,
+      room,
+    });
+
+    if (error || !user) return console.log(error);
+
+    socket.join(user.room);
+
+    io.to(user.room).emit(
+      'teacherStatus',
+      UsersController.checkTeacherStatus(user.room),
+    );
+
+    socket.broadcast
+      .to(user.room)
+      .emit('updatedRoomInfo', UsersController.getAllStudentsInRoom(user.room));
+
+    io.to(user.room).emit(
+      'numberOfStudentsInRoom',
+      UsersController.getNumberOfStudentsInRoom(user.room),
+    );
+
+    io.to(user.room).emit(
+      'fetchUsers',
+      UsersController.getAllStudentsInRoom(user.room),
+    );
+
+    console.log(`User => ${socket.id} connected.`);
+  });
+
+  socket.on('disconnect', () => {
+    const user = removeUser(socket.id);
+
+    if (user) {
+      console.log(socket);
+
+      io.to(user.room).emit(
+        'numberOfStudentsInRoom',
+        UsersController.getNumberOfStudentsInRoom(user.room),
+      );
+
+      io.to(user.room).emit(
+        'teacherStatus',
+        UsersController.checkTeacherStatus(user.room),
+      );
+
+      io.to(user.room).emit(
+        'fetchUsers',
+        UsersController.getAllStudentsInRoom(user.room),
+      );
+      socket.leave(user.room);
+    }
+
+    socket.disconnect();
+
+    console.log(`User => ${socket.id} disconnected.`);
+  });
+});
+
+httpServer.listen(PORT, () =>
+  console.log(`\nServidor online na porta: ${PORT}!`),
+);
