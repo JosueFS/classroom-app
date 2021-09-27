@@ -9,6 +9,10 @@ export const Container = styled.button`
   border-radius: 10px;
 
   &.btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
     border: none;
     font-weight: bold;
     color: ${props => props.theme.colors.defaultColors.white};
