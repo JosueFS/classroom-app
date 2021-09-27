@@ -38,6 +38,7 @@ const Footer: React.FC<IButtonProps> = ({ buttonList }) => {
     <S.Container ref={containerRef}>
       {buttonList.map((btn, index) => (
         <button
+          key={`${Math.random()}`}
           type="button"
           onClick={handleSelectedMenu}
           className={index === 0 ? 'active' : ''}
