@@ -11,7 +11,9 @@ import {
 } from 'react-icons/fa';
 import { MdScreenShare, MdStopScreenShare } from 'react-icons/md';
 import { HiDotsHorizontal, HiOutlineDotsVertical } from 'react-icons/hi';
+import { BsCardChecklist } from 'react-icons/bs';
 import Carousel, { ItemObject } from 'react-elastic-carousel';
+import { Socket } from 'socket.io-client';
 
 import { generateRandomAvatar } from '../../../utils/generateRandomAvatar';
 
@@ -19,11 +21,28 @@ import { useAuth } from '../../../hooks/auth';
 import ToggleMediaIcon from '../../../components/ToggleMediaIcon';
 
 import * as S from './styles';
+import { useWebSocket } from '../../../hooks/websocket';
+import Modal from '../../../components/Modal';
+import Quiz from '../Quiz';
 
-const Classroom: React.FC = () => {
+interface IStudents {
+  id: string;
+  token: string;
+  type: string;
+  room: string;
+}
+
+const Room: React.FC = () => {
   const history = useHistory();
   const { url } = useRouteMatch();
+
   const { authState } = useAuth();
+  const { openSocket } = useWebSocket();
+
+  const [socket, setSocket] = useState<Socket>();
+  const [numberStudentsInRoom, setNumberStudentsInRoom] = useState(0);
+  const [students, setStudents] = useState<IStudents[]>([]);
+  const [showModal, setShowModal] = useState(false);
 
   const handleNavigateToBack = useCallback(() => {
     history.goBack();
@@ -33,15 +52,46 @@ const Classroom: React.FC = () => {
     history.goBack();
   }, [history]);
 
+  useEffect(() => {
+    if (socket) {
+      socket.emit('join', { ...authState, room: 'matematica' });
+
+      socket.on('numberOfStudentsInRoom', (number: number) => {
+        console.log(number);
+        setNumberStudentsInRoom(number);
+      });
+
+      socket.on('updatedRoomInfo', data => {
+        console.log(data);
+      });
+
+      socket.on('fetchUsers', (connectedStudents: IStudents[]) => {
+        setStudents(connectedStudents);
+      });
+    }
+
+    return () => {
+      if (socket) {
+        socket.disconnect();
+        socket.close();
+      }
+    };
+  }, [authState, socket]);
+
+  useEffect(() => {
+    const newSocket = openSocket();
+    setSocket(newSocket);
+  }, [openSocket]);
+
   return (
     <S.Container>
       <header>
         <FaArrowLeft size={24} onClick={handleNavigateToBack} />
         <div>
           <h2>Matemática</h2>
-          <span>18 Alunos Conectados</span>
+          <span>{numberStudentsInRoom} Alunos Conectados</span>
         </div>
-        <FaRegCommentDots size={24} />
+        <BsCardChecklist size={48} onClick={() => setShowModal(true)} />
       </header>
 
       <main
@@ -93,46 +143,24 @@ const Classroom: React.FC = () => {
             pagination={false}
             isRTL={false}
           >
-            <div className="student-list__card">
-              <img src={generateRandomAvatar()} alt="avatar" />
-              <div>
-                <span>{authState.name}</span>
-                <FaMicrophoneSlash size={14} />
-                <HiOutlineDotsVertical size={14} />
-              </div>
-            </div>
-
-            <div className="student-list__card">
-              <img src={generateRandomAvatar()} alt="avatar" />
-              <div>
-                <span>{authState.name}</span>
-                <FaMicrophoneSlash size={14} />
-                <HiOutlineDotsVertical size={14} />
-              </div>
-            </div>
-
-            <div className="student-list__card">
-              <img src={generateRandomAvatar()} alt="avatar" />
-              <div>
-                <span>{authState.name}</span>
-                <FaMicrophoneSlash size={14} />
-                <HiOutlineDotsVertical size={14} />
-              </div>
-            </div>
-
-            <div className="student-list__card">
-              <img src={generateRandomAvatar()} alt="avatar" />
-              <div>
-                <span>{authState.name}</span>
-                <FaMicrophoneSlash size={14} />
-                <HiOutlineDotsVertical size={14} />
-              </div>
-            </div>
+            {students &&
+              students.map(student => (
+                <div className="student-list__card">
+                  <img src={generateRandomAvatar(student.token)} alt="avatar" />
+                  <div>
+                    <span>{authState.name}</span>
+                    <FaMicrophoneSlash size={14} />
+                    <HiOutlineDotsVertical size={14} />
+                  </div>
+                </div>
+              ))}
           </Carousel>
         </div>
       </main>
+
+      <Quiz showModal={showModal} setShowModal={setShowModal} />
     </S.Container>
   );
 };
 
-export default Classroom;
+export default Room;

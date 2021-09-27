@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Link, useRouteMatch } from 'react-router-dom';
 import { IconBaseProps } from 'react-icons';
 import { FaPowerOff, FaUsers } from 'react-icons/fa';
@@ -9,6 +9,7 @@ import Footer from '../../../components/Footer';
 import * as S from './styles';
 
 import { useAuth } from '../../../hooks/auth';
+import { useWebSocket } from '../../../hooks/websocket';
 
 type MenuButton = {
   labelText: string;
@@ -16,9 +17,9 @@ type MenuButton = {
 };
 
 const Home: React.FC = () => {
+  const { openSocket } = useWebSocket();
   const { authState, signOut } = useAuth();
   const { url } = useRouteMatch();
-  // const history = useHistory();
 
   const handleJoinClassroom = useCallback(() => {
     return `${url}/classroom`;
@@ -73,7 +74,7 @@ const Home: React.FC = () => {
 
         <h3>Planejar</h3>
         <div className="container">
-          <Link to={handleNotImplementedYet}>
+          <Link to={handleNotImplementedYet} onClick={openSocket}>
             <h5>Planejar Aula</h5>
             <p>
               Preencha as informações da aula que serão visualizadas no lobby da
