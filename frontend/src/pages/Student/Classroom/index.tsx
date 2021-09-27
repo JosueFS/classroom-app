@@ -1,7 +1,7 @@
-import React, { useCallback, useEffect, useRef } from 'react';
-
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import socketIOClient, { Socket } from 'socket.io-client';
 import { Tab, TabList, TabPanel, Tabs } from 'react-tabs';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useRouteMatch } from 'react-router-dom';
 import {
   FaArrowLeft,
   FaCheckSquare,
@@ -16,13 +16,34 @@ import { GiRank1, GiRank2, GiRank3 } from 'react-icons/gi';
 
 import { generateRandomAvatar } from '../../../utils/generateRandomAvatar';
 
+import { useAuth } from '../../../hooks/auth';
+import { useWebSocket } from '../../../hooks/websocket';
+
 import ProgressBar from '../../../components/ProgressBar';
 import Button from '../../../components/Button';
 
 import * as S from './styles';
+import LoadingSpinner from '../../../components/LoadingSpinner';
+
+interface IStudents {
+  id: string;
+  token: string;
+  type: string;
+  room: string;
+}
 
 const Classroom: React.FC = () => {
+  const { authState } = useAuth();
+  const { openSocket } = useWebSocket();
   const history = useHistory();
+  const { url } = useRouteMatch();
+
+  const [socket, setSocket] = useState<Socket>(() => {
+    return openSocket();
+  });
+  const [numberStudentsInRoom, setNumberStudentsInRoom] = useState(0);
+  const [students, setStudents] = useState<IStudents[]>([]);
+  const [teacherStatus, setTeacherStatus] = useState('offline');
 
   const tabsRef = useRef<HTMLElement>({} as HTMLElement);
   const tabMarkerRef = useRef<HTMLDivElement>({} as HTMLDivElement);
@@ -42,6 +63,10 @@ const Classroom: React.FC = () => {
     history.goBack();
   }, [history]);
 
+  const handleJoinRoom = useCallback(() => {
+    history.push(`${url}/matematica`);
+  }, [history, url]);
+
   useEffect(() => {
     const firstTab: HTMLLIElement = tabsRef.current.firstElementChild
       ?.firstElementChild as HTMLLIElement;
@@ -50,6 +75,34 @@ const Classroom: React.FC = () => {
       tabMarkerRef.current.style.width = `${firstTab.offsetWidth}px`;
     }
   }, []);
+
+  useEffect(() => {
+    if (socket) {
+      socket.emit('join', { ...authState, room: 'matematica' });
+
+      socket.on('numberOfStudentsInRoom', (number: number) => {
+        setNumberStudentsInRoom(number);
+      });
+
+      socket.on('teacherStatus', (status: string) => {
+        console.log(status);
+        setTeacherStatus(status);
+      });
+
+      socket.on('updatedRoomInfo', data => {
+        console.log(data);
+      });
+
+      socket.on('fetchUsers', (connectedStudents: IStudents[]) => {
+        setStudents(connectedStudents);
+      });
+    }
+
+    return () => {
+      socket.disconnect();
+      socket.close();
+    };
+  }, [authState, socket]);
 
   return (
     <S.Container>
@@ -101,17 +154,23 @@ const Classroom: React.FC = () => {
           <section className="students">
             <strong className="label">Alunos conectados</strong>
             <div className="students__list">
-              {Array(7)
-                .fill(0)
-                .map(student => (
-                  <img
-                    key={generateRandomAvatar()}
-                    className="students"
-                    src={generateRandomAvatar()}
-                    alt={`avatar do aluno - ${student}`}
-                  />
-                ))}
-              <div>+{16 - 5}</div>
+              {students.length &&
+                students
+                  .filter(student => student.type !== 'teacher')
+                  .slice(0, 7)
+                  .map(student => (
+                    <img
+                      key={authState.token}
+                      className="students"
+                      src={generateRandomAvatar(student.token)}
+                      alt={`avatar do aluno - ${student}`}
+                    />
+                  ))}
+              <div>{`${
+                numberStudentsInRoom - 7 > 0
+                  ? `+${numberStudentsInRoom - 7}`
+                  : ''
+              }`}</div>
             </div>
           </section>
 
@@ -147,8 +206,19 @@ const Classroom: React.FC = () => {
           </section>
 
           <S.Footer>
-            <Button className="btn join-room" type="button">
-              Entrar na sala
+            <Button
+              className="btn join-room"
+              type="button"
+              onClick={handleJoinRoom}
+            >
+              {teacherStatus === 'online' ? (
+                'Entrar na sala'
+              ) : (
+                <>
+                  <span>Aguarde seu professor</span>
+                  <LoadingSpinner />
+                </>
+              )}
             </Button>
           </S.Footer>
         </TabPanel>
