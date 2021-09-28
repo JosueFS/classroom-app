@@ -7,6 +7,7 @@ import SignIn from '../pages/SignIn';
 
 import StudentHome from '../pages/Student/Home';
 import StudentClassroom from '../pages/Student/Classroom';
+import StudentRoom from '../pages/Student/Room';
 
 import TeacherHome from '../pages/Teacher/Home';
 import TeacherClassroom from '../pages/Teacher/Classroom';
@@ -17,7 +18,13 @@ const Routes: React.FC = () => {
     <Switch>
       <Route path="/" exact component={SignIn} />
       <Route path="/home" component={StudentHome} isPrivate />
-      <Route path="/classroom" component={StudentClassroom} isPrivate />
+      <Route exact path="/classroom" component={StudentClassroom} isPrivate />
+      <Route
+        exact
+        path="/classroom/matematica"
+        component={StudentRoom}
+        isPrivate
+      />
 
       <Route
         path="/teacher"
