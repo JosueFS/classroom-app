@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import socketIOClient, { Socket } from 'socket.io-client';
+import { Socket } from 'socket.io-client';
 import { Tab, TabList, TabPanel, Tabs } from 'react-tabs';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 import {
@@ -82,7 +82,6 @@ const Classroom: React.FC = () => {
       socket.emit('join', { ...authState, room: 'matematica' });
 
       socket.on('numberOfStudentsInRoom', (number: number) => {
-        console.log(number);
         setNumberStudentsInRoom(number);
       });
 
