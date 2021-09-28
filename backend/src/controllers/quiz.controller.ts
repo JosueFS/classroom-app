@@ -4,6 +4,7 @@ import connect from '../services/mongodb';
 
 import Quiz, { IQuizType } from '../models/quiz.model';
 import Question, { IQuestionType } from '../models/question.model';
+import { Types } from 'mongoose';
 
 const QuizController = {
   index: async (request: Request, response: Response) => {
@@ -37,31 +38,38 @@ const QuizController = {
     console.log('Lista de Questões de determinado Assunto');
     const { id } = request.params;
 
+    if (!Types.ObjectId.isValid(id))
+      return response.status(406).json(`ID: ${id} is incorrect`);
+
     await connect();
 
-    const quiz: IQuizType = await Quiz.findOne({
-      _id: id,
-    });
+    try {
+      const quiz: IQuizType = await Quiz.findOne({
+        _id: id,
+      });
 
-    if (!quiz) {
-      return response.status(406).json(`Quiz was not found`);
+      if (!quiz) {
+        return response.status(406).json(`Quiz was not found`);
+      }
+
+      const questions: IQuestionType[] = await Question.find(
+        {
+          _id: { $in: quiz.questions },
+        },
+        // {
+        //   correct_answer: false,
+        // },
+      );
+
+      return response.status(200).json({
+        id: quiz._id,
+        name: quiz.name,
+        subject: quiz.subject,
+        questions,
+      });
+    } catch (error) {
+      return error;
     }
-
-    const questions: IQuestionType[] = await Question.find(
-      {
-        _id: { $in: quiz.questions },
-      },
-      // {
-      //   correct_answer: false,
-      // },
-    );
-
-    return response.status(200).json({
-      id: quiz._id,
-      name: quiz.name,
-      subject: quiz.subject,
-      questions,
-    });
   },
   create: async (request: Request, response: Response) => {
     console.log('Criando nova categoria de Questionário');

@@ -40,6 +40,8 @@ const removeUser = (id: string) => {
 
 const getUser = (token: string) => users.find(user => user.token === token);
 
+const getTeacherSocketID = () => users.find(user => user.type === 'teacher');
+
 const getAllStudentsInRoom = (room: string) =>
   users.filter(user => user.room === room);
 
@@ -61,4 +63,5 @@ export {
   getAllStudentsInRoom,
   getNumberOfStudentsInRoom,
   checkTeacherStatus,
+  getTeacherSocketID,
 };

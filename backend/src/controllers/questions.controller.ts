@@ -28,9 +28,9 @@ const QuestionsController = {
       {
         _id: { $in: quizList.questions },
       },
-      {
-        correct_answer: false,
-      },
+      // {
+      //   correct_answer: false,
+      // },
     );
 
     return response.status(200).json({
