@@ -1,18 +1,17 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { useHistory, useRouteMatch } from 'react-router-dom';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import {
   FaArrowLeft,
-  FaRegCommentDots,
   FaVideo,
   FaVideoSlash,
   FaMicrophone,
   FaMicrophoneSlash,
   FaPhone,
 } from 'react-icons/fa';
-import { MdScreenShare, MdStopScreenShare } from 'react-icons/md';
+import { MdScreenShare, MdStopScreenShare, MdClose } from 'react-icons/md';
 import { HiDotsHorizontal, HiOutlineDotsVertical } from 'react-icons/hi';
 import { BsCardChecklist } from 'react-icons/bs';
-import Carousel, { ItemObject } from 'react-elastic-carousel';
+import Carousel from 'react-elastic-carousel';
 import { Socket } from 'socket.io-client';
 
 import { generateRandomAvatar } from '../../../utils/generateRandomAvatar';
@@ -22,11 +21,13 @@ import ToggleMediaIcon from '../../../components/ToggleMediaIcon';
 
 import * as S from './styles';
 import { useWebSocket } from '../../../hooks/websocket';
-import Modal from '../../../components/Modal';
-import Quiz from '../Quiz';
+
+import SendNotificationModal from '../../../components/Notification/SendNotification';
+import api from '../../../services/api';
 
 interface IStudents {
   id: string;
+  name: string;
   token: string;
   type: string;
   room: string;
@@ -34,7 +35,6 @@ interface IStudents {
 
 const Room: React.FC = () => {
   const history = useHistory();
-  const { url } = useRouteMatch();
 
   const { authState } = useAuth();
   const { openSocket } = useWebSocket();
@@ -43,6 +43,7 @@ const Room: React.FC = () => {
   const [numberStudentsInRoom, setNumberStudentsInRoom] = useState(0);
   const [students, setStudents] = useState<IStudents[]>([]);
   const [showModal, setShowModal] = useState(false);
+  const [idQuizToSend, setIdQuizToSend] = useState('');
 
   const handleNavigateToBack = useCallback(() => {
     history.goBack();
@@ -57,16 +58,21 @@ const Room: React.FC = () => {
       socket.emit('join', { ...authState, room: 'matematica' });
 
       socket.on('numberOfStudentsInRoom', (number: number) => {
-        console.log(number);
         setNumberStudentsInRoom(number);
       });
 
-      socket.on('updatedRoomInfo', data => {
-        console.log(data);
+      socket.on('updatedRoomInfo', (connectedSockets: IStudents[]) => {
+        const teacher = connectedSockets.filter(
+          users => users.type === 'teacher',
+        );
       });
 
       socket.on('fetchUsers', (connectedStudents: IStudents[]) => {
         setStudents(connectedStudents);
+      });
+
+      socket.on('studentsQuizResults', quizResult => {
+        console.log(quizResult);
       });
     }
 
@@ -77,6 +83,22 @@ const Room: React.FC = () => {
       }
     };
   }, [authState, socket]);
+
+  const getQuizToSend = async () => {
+    const response = await api.get(`quiz/${idQuizToSend}`);
+
+    if (socket) {
+      socket.emit('sendQuizNotification', response.data);
+
+      socket.on('receiveNotification', data => {
+        console.log(data);
+      });
+    }
+  };
+
+  useEffect(() => {
+    getQuizToSend();
+  }, [idQuizToSend, socket]);
 
   useEffect(() => {
     const newSocket = openSocket();
@@ -91,7 +113,16 @@ const Room: React.FC = () => {
           <h2>Matemática</h2>
           <span>{numberStudentsInRoom} Alunos Conectados</span>
         </div>
-        <BsCardChecklist size={48} onClick={() => setShowModal(true)} />
+        {showModal ? (
+          <MdClose
+            size={48}
+            onClick={() => setShowModal(false)}
+            color="#fff"
+            style={{ backgroundColor: '#c00', borderRadius: '4px' }}
+          />
+        ) : (
+          <BsCardChecklist size={48} onClick={() => setShowModal(true)} />
+        )}
       </header>
 
       <main
@@ -145,10 +176,10 @@ const Room: React.FC = () => {
           >
             {students &&
               students.map(student => (
-                <div className="student-list__card">
+                <div className="student-list__card" key={student.token}>
                   <img src={generateRandomAvatar(student.token)} alt="avatar" />
                   <div>
-                    <span>{authState.name}</span>
+                    <span>{student.name}</span>
                     <FaMicrophoneSlash size={14} />
                     <HiOutlineDotsVertical size={14} />
                   </div>
@@ -158,7 +189,11 @@ const Room: React.FC = () => {
         </div>
       </main>
 
-      <Quiz showModal={showModal} setShowModal={setShowModal} />
+      <SendNotificationModal
+        setIdQuizToSend={setIdQuizToSend}
+        setShowNotificationModal={setShowModal}
+        showNotificationModal={showModal}
+      />
     </S.Container>
   );
 };

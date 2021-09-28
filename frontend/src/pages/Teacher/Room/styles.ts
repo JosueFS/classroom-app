@@ -136,10 +136,11 @@ export const Container = styled.div`
           background: linear-gradient(
             180deg,
             ${props => props.theme.colors.dark}00 0%,
-            ${props => props.theme.colors.dark}44 50%
+            ${props => props.theme.colors.defaultColors.black}99 80%
           );
 
           span {
+            text-transform: capitalize;
             font-size: 12px;
             line-height: 16px;
           }
