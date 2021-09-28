@@ -25,6 +25,14 @@ app.use((error: Error, request: Request, response: Response, next: Next) => {
   response.json({ message: error.message || 'An unknown error occured.' });
 });
 
+interface IResults {
+  subject: string;
+  questions: [{ question: string; answer: string; isCorrect: boolean }];
+  score: number;
+}
+
+let results: IResults[] = [];
+
 io.on('connection', socket => {
   socket.on('join', ({ id, token, name, type, room }) => {
     const { error, user } = UsersController.addUser({
@@ -35,7 +43,7 @@ io.on('connection', socket => {
       room,
     });
 
-    if (error || !user) return console.log(error);
+    if (error || !user) return error;
 
     socket.join(user.room);
 
@@ -58,6 +66,22 @@ io.on('connection', socket => {
       UsersController.getAllStudentsInRoom(user.room),
     );
 
+    socket.on('sendQuizNotification', data => {
+      io.to(user.room).emit('quizToStudents', data);
+    });
+
+    socket.on('handleSubmitResult', (data: IResults) => {
+      io.to(user.room).emit('studentsQuizResults', results);
+      results.push(data);
+      console.log(data);
+
+      const teacher = UsersController.getTeacherSocketID();
+
+      if (teacher) {
+        console.log(`Enviando para ${teacher.name} => ${teacher.id}`);
+      }
+    });
+
     console.log(`User => ${socket.id} connected.`);
   });
 
@@ -65,8 +89,6 @@ io.on('connection', socket => {
     const user = removeUser(socket.id);
 
     if (user) {
-      console.log(socket);
-
       io.to(user.room).emit(
         'numberOfStudentsInRoom',
         UsersController.getNumberOfStudentsInRoom(user.room),
