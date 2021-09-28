@@ -2,10 +2,9 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
   width: 100%;
+  max-width: 768px;
   height: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
+  margin: 0 auto;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -17,7 +16,7 @@ export const Container = styled.div`
 `;
 
 export const ModalContainer = styled.div`
-  position: relative;
+  /* position: relative; */
   width: 100%;
   max-width: 300px;
   height: 100%;
