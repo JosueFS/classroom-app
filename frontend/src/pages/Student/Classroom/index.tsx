@@ -268,6 +268,7 @@ const Classroom: React.FC = () => {
             </div>
           </section>
         </TabPanel>
+        <TabPanel />
       </Tabs>
     </S.Container>
   );
