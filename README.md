@@ -1,5 +1,5 @@
-<div><img alt="classroom-app" src="https://i.ibb.co/23S3yyG/Whats-App-Image-2021-09-27-at-15-37-49.jpg" width="260" height="510" />
-<img alt="classroom-app" src="https://i.ibb.co/cv7SVMS/Whats-App-Image-2021-09-27-at-15-38-51.jpg" width="260" height="510" />
+<div><img alt="classroom-app" src="https://i.ibb.co/23S3yyG/Whats-App-Image-2021-09-27-at-15-37-49.jpg" width="230" height="500" />
+<img alt="classroom-app" src="https://i.ibb.co/cv7SVMS/Whats-App-Image-2021-09-27-at-15-38-51.jpg" width="230" height="500" />
 </div>
 
 <h2>Introdução</h2>
@@ -69,25 +69,25 @@ cd backend && npm dev || cd backend && yarn dev
 <h2>Algumas telas da aplicação</h2>
 
 <div>
-<img alt="classroom-app" src="https://i.ibb.co/dbyTRSR/Whats-App-Image-2021-09-27-at-15-37-49-1.jpg" width="260" height="510" />
-<img alt="classroom-app" src="https://i.ibb.co/5GDSM1F/Whats-App-Image-2021-09-27-at-15-37-49-2.jpg" width="260" height="510" />
-<img alt="classroom-app" src="https://i.ibb.co/0m95hqX/Whats-App-Image-2021-09-27-at-15-37-49-3.jpg" width="260" height="510" />
+<img alt="classroom-app" src="https://i.ibb.co/dbyTRSR/Whats-App-Image-2021-09-27-at-15-37-49-1.jpg" width="230" height="500" />
+<img alt="classroom-app" src="https://i.ibb.co/5GDSM1F/Whats-App-Image-2021-09-27-at-15-37-49-2.jpg" width="230" height="500" />
+<img alt="classroom-app" src="https://i.ibb.co/0m95hqX/Whats-App-Image-2021-09-27-at-15-37-49-3.jpg" width="230" height="500" />
 </div>
 
 <br>
 
 <div>
-<img alt="classroom-app" src="https://i.ibb.co/1v4MVpL/Whats-App-Image-2021-09-27-at-15-38-51-1.jpg" width="260" height="510" />
-<img alt="classroom-app" src="https://i.ibb.co/vBTJGZP/Whats-App-Image-2021-09-27-at-15-38-51-2.jpg" width="260" height="510" />
-<img alt="classroom-app" src="https://i.ibb.co/ncSRYZ6/Whats-App-Image-2021-09-27-at-15-38-51-3.jpg" width="260" height="510" />
+<img alt="classroom-app" src="https://i.ibb.co/1v4MVpL/Whats-App-Image-2021-09-27-at-15-38-51-1.jpg" width="230" height="500" />
+<img alt="classroom-app" src="https://i.ibb.co/vBTJGZP/Whats-App-Image-2021-09-27-at-15-38-51-2.jpg" width="230" height="500" />
+<img alt="classroom-app" src="https://i.ibb.co/ncSRYZ6/Whats-App-Image-2021-09-27-at-15-38-51-3.jpg" width="230" height="500" />
 </div>
 
 <br>
 
 <div>
-<img alt="classroom-app" src="https://i.ibb.co/ncSRYZ6/Whats-App-Image-2021-09-27-at-15-38-51-3.jpg" width="260" height="510" />
-<img alt="classroom-app" src="https://i.ibb.co/VJqzCd9/Whats-App-Image-2021-09-28-at-19-39-09-3.jpg" width="260" height="510" />
-<img alt="classroom-app" src="https://i.ibb.co/bdv7tDG/Whats-App-Image-2021-09-28-at-19-39-10-2.jpg" width="260" height="510" />
+<img alt="classroom-app" src="https://i.ibb.co/98M5vX0/Whats-App-Image-2021-09-29-at-10-08-49.jpg" width="230" height="500" />
+<img alt="classroom-app" src="https://i.ibb.co/VJqzCd9/Whats-App-Image-2021-09-28-at-19-39-09-3.jpg" width="230" height="500" />
+<img alt="classroom-app" src="https://i.ibb.co/bdv7tDG/Whats-App-Image-2021-09-28-at-19-39-10-2.jpg" width="230" height="500" />
 </div>
 
 <h2>Como contribuir?</h2>
@@ -107,6 +107,6 @@ cd backend && npm dev || cd backend && yarn dev
 
 <h2><a id="user-content--licença" class="anchor" aria-hidden="true" href="#-licença"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z"></path></svg></a><g-emoji class="g-emoji" alias="memo" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f4dd.png">📝</g-emoji> Licença</h2>
 
-<p>Este projeto esta sobe a licença <a href="/JosueFS/Ecoleta-NLW/blob/master/LICENSE">MIT</a>.</p>
+<p>Este projeto esta sobe a licença <a href="/JosueFS/classroom-app/blob/master/LICENSE">MIT</a>.</p>
 
 <p><a href="https://www.linkedin.com/in/jfds/" rel="nofollow">Entre em contato!</a></p>
